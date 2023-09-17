@@ -1,6 +1,9 @@
 package com.example.rosa.app.DTOs;
 
 import jakarta.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
+
 
 public record ProductDTO(
     @NotBlank
@@ -19,7 +22,7 @@ public record ProductDTO(
     @NotNull
     @Min(0)
     @Max(48)
-    Double minimalMonths,
+    Integer minimalMonths,
 
     @NotNull
     @PositiveOrZero
