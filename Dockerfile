@@ -1,8 +1,20 @@
-FROM openjdk:17-oracle AS build
-COPY . .
-RUN chmod +x ./gradlew && ./gradlew build
+FROM eclipse-temurin:17-jdk-alpine
 
-FROM openjdk:17.0.1-jdk-slim
-COPY --from=build /build/libs/rosa-0.0.1-SNAPSHOT.jar rosa.jar
+WORKDIR /app
+
+COPY build.gradle .
+COPY settings.gradle .
+COPY gradle gradle
+
+COPY gradlew .
+COPY gradle/wrapper/gradle-wrapper.properties ./gradle/wrapper/
+
+RUN chmod +x gradlew
+
+COPY src src
+
+RUN ./gradlew bootJar
+
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","rosa.jar"]
+
+ENTRYPOINT ["java", "-jar", "build/libs/rosa-0.0.1-SNAPSHOT.jar"]
